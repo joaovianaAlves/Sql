@@ -101,8 +101,10 @@ go
 
 INSERT INTO Autor_Livro (cd_Livro, cd_Autor)
 VALUES (1, 3),
+       (1, 2),
        (2, 1),
        (3, 4),
+       (4, 2),
        (4, 3)
 
 --Solve Exercises
@@ -110,7 +112,18 @@ VALUES (1, 3),
 ALTER TABLE Livro
 	ADD CONSTRAINT chk_dt_Lancamento CHECK (dt_Lancamento > GETDATE())
 
-SELECT Autor_Livro.cd_Livro
+SELECT Autor_Livro.cd_Livro, COUNT(*)
 FROM Autor_Livro
 GROUP BY Autor_Livro.cd_Livro
-HAVING COUNT(Autor_Livro.cd_Autor) >= 2
+HAVING COUNT(*) >= 2
+
+SELECT cd_Editora, 
+AVG(vl_Livro) 
+FROM Livro
+WHERE vl_Livro > 45
+GROUP BY cd_Editora
+
+SELECT MAX(cd_Livro), MAX(nm_Titulo), sg_Assunto, MAX(vl_Livro) 
+FROM Livro
+WHERE vl_Livro <> 0 AND (sg_Assunto = 'D' OR sg_Assunto = 'A')
+GROUP BY Livro.sg_Assunto
